@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Inventario de equipos</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;500&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --ink:#141C2B;--bg:#E7EBF0;--panel:#FFFFFF;--line:#D3DAE3;
+      --muted:#65758B;--signal:#2563EB;
+    }
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);
+      color:var(--ink);-webkit-font-smoothing:antialiased;min-height:100vh}
+    .wrap{max-width:1000px;margin:0 auto;padding:40px 24px 80px}
+
+    header{margin-bottom:32px;padding-bottom:20px;border-bottom:1px solid var(--line)}
+    .eyebrow{font-family:'JetBrains Mono',monospace;font-size:12px;
+      letter-spacing:.18em;text-transform:uppercase;color:var(--signal);
+      margin-bottom:8px}
+    h1{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:32px;
+      letter-spacing:-.02em}
+
+    .board{background:var(--panel);border:1px solid var(--line);
+      border-radius:16px;overflow:hidden}
+    .board-head,.row{display:grid;grid-template-columns:1.6fr 1.2fr 1.4fr;
+      gap:16px;padding:16px 24px;align-items:center}
+    .board-head{background:#F1F4F8;border-bottom:1px solid var(--line);
+      font-family:'JetBrains Mono',monospace;font-size:11px;
+      letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+    .row{border-bottom:1px solid var(--line);text-decoration:none;
+      color:inherit;transition:background .15s}
+    .row:last-child{border-bottom:none}
+    .row:hover{background:#F7F9FC}
+    .hostname{font-family:'JetBrains Mono',monospace;font-weight:600;font-size:14px}
+    .mono{font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--muted)}
+    .cell-label{font-size:9px;color:var(--muted);text-transform:uppercase;
+      letter-spacing:.1em;display:none}
+
+    .empty{padding:60px 24px;text-align:center;color:var(--muted)}
+    .empty h3{font-family:'Space Grotesk',sans-serif;color:var(--ink);
+      margin-bottom:8px;font-size:18px}
+    footer{margin-top:20px;font-family:'JetBrains Mono',monospace;
+      font-size:11px;color:var(--muted);text-align:center}
+
+    @media (max-width:640px){
+      .board-head{display:none}
+      .row{grid-template-columns:1fr;row-gap:10px;padding:18px 20px}
+      .cell-label{display:block;margin-bottom:2px}
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div class="eyebrow">Inventario · db/db.json</div>
+      <h1>Equipos registrados</h1>
+    </header>
+
+    <div class="board">
+      <div class="board-head">
+        <span>Equipo</span>
+        <span>IP origen</span>
+        <span>Recibido en</span>
+      </div>
+
+      {% for hostname, info in equipos.items() %}
+      <a class="row" href="{{ url_for('detalle', hostname=hostname) }}">
+        <div>
+          <div class="cell-label">Equipo</div>
+          <div class="hostname">{{ hostname }}</div>
+        </div>
+        <div>
+          <div class="cell-label">IP origen</div>
+          <div class="mono">{{ info.ip_origen or "—" }}</div>
+        </div>
+        <div>
+          <div class="cell-label">Recibido en</div>
+          <div class="mono">{{ info.recibido_en or "—" }}</div>
+        </div>
+      </a>
+      {% else %}
+      <div class="empty">
+        <h3>No hay equipos en db.json</h3>
+        <p>El fichero no contiene ningun equipo.</p>
+      </div>
+      {% endfor %}
+    </div>
+
+    <footer>{{ equipos|length }} equipo(s) en db/db.json</footer>
+  </div>
+</body>
+</html>

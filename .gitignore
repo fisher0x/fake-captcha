@@ -1,0 +1,22 @@
+# Python-generated files
+__pycache__/
+*.py[oc]
+build/
+dist/
+wheels/
+*.egg-info
+
+# Virtual environments
+.venv
+
+# uv lockfile (regenerate with: uv sync)
+uv.lock
+
+# Docker
+.env
+
+# Runtime data
+fakecaptcha/db/
+
+# IDE / tooling
+.playwright-mcp/

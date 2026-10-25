@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ hostname }} · Detalle</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;500&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --ink:#141C2B;--bg:#E7EBF0;--panel:#FFFFFF;--line:#D3DAE3;
+      --muted:#65758B;--signal:#2563EB;
+    }
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);
+      color:var(--ink);-webkit-font-smoothing:antialiased;min-height:100vh}
+    .wrap{max-width:900px;margin:0 auto;padding:40px 24px 80px}
+
+    .back{font-family:'JetBrains Mono',monospace;font-size:13px;
+      color:var(--muted);text-decoration:none;display:inline-flex;
+      align-items:center;gap:8px;margin-bottom:28px}
+    .back:hover{color:var(--signal)}
+
+    .card-head{background:var(--panel);border:1px solid var(--line);
+      border-radius:16px;padding:26px 30px;margin-bottom:20px}
+    h1{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:30px;
+      letter-spacing:-.02em;margin-bottom:8px}
+    .meta{font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--muted)}
+    .meta strong{color:var(--ink);font-weight:500}
+
+    .section-title{font-family:'JetBrains Mono',monospace;font-size:11px;
+      letter-spacing:.14em;text-transform:uppercase;color:var(--muted);
+      margin:0 4px 12px}
+    .grid{background:var(--panel);border:1px solid var(--line);
+      border-radius:16px;overflow:hidden}
+    .field{display:grid;grid-template-columns:230px 1fr;gap:16px;
+      padding:14px 26px;border-bottom:1px solid var(--line)}
+    .field:last-child{border-bottom:none}
+    .field:nth-child(odd){background:#F8FAFC}
+    .k{font-size:13px;color:var(--muted)}
+    .v{font-family:'JetBrains Mono',monospace;font-size:13px;word-break:break-word}
+
+    @media (max-width:640px){
+      .field{grid-template-columns:1fr;gap:3px;padding:14px 20px}
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <a class="back" href="{{ url_for('dashboard') }}">← Volver</a>
+
+    <div class="card-head">
+      <h1>{{ hostname }}</h1>
+      <div class="meta">
+        IP <strong>{{ info.ip_origen or "—" }}</strong> ·
+        recibido <strong>{{ info.recibido_en or "—" }}</strong>
+      </div>
+    </div>
+
+    <div class="section-title">Datos</div>
+    <div class="grid">
+      {% for clave, valor in info.datos.items() %}
+      <div class="field">
+        <div class="k">{{ clave }}</div>
+        <div class="v">{{ valor }}</div>
+      </div>
+      {% else %}
+      <div class="field"><div class="k">—</div><div class="v">Sin datos</div></div>
+      {% endfor %}
+    </div>
+  </div>
+</body>
+</html>

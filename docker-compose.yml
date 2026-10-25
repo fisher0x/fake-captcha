@@ -1,0 +1,27 @@
+services:
+  fakecaptcha:
+    build: .
+    working_dir: /app/fakecaptcha
+    entrypoint: ["/app/fakecaptcha/entrypoint.sh"]
+    command: gunicorn -w 2 -b 0.0.0.0:8080 run:app
+    environment:
+      - PUBLIC_URL=${PUBLIC_URL}
+    # Bound to loopback: the host's existing nginx proxies to it, not exposed publicly.
+    ports:
+      - "127.0.0.1:${FAKECAPTCHA_PORT:-8080}:8080"
+    volumes:
+      - db-data:/app/fakecaptcha/db
+    restart: unless-stopped
+
+  client:
+    build: .
+    working_dir: /app/client
+    command: gunicorn -w 2 -b 0.0.0.0:5000 app:app
+    environment:
+      - PUBLIC_URL=${PUBLIC_URL}
+    ports:
+      - "127.0.0.1:${CLIENT_PORT:-5000}:5000"
+    restart: unless-stopped
+
+volumes:
+  db-data:

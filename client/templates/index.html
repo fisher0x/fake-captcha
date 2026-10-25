@@ -1,0 +1,878 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Presentación Digitalizando Líderes_2026</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap" rel="stylesheet">
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Google Sans', 'Roboto', Arial, sans-serif;
+      background: #f8f9fa;
+      color: #202124;
+      min-height: 100vh;
+      overflow: hidden;
+    }
+
+    .ms { font-family: 'Material Symbols Outlined'; font-weight: normal; font-style: normal; font-size: 20px; vertical-align: middle; -webkit-font-feature-settings: 'liga'; font-feature-settings: 'liga'; }
+
+    /* ================================================================
+       BACKGROUND: Full Google Drive replica (non-interactive, blurred)
+       ================================================================ */
+    .drive-bg {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      filter: blur(3px);
+      pointer-events: none;
+      user-select: none;
+      transform: scale(1.01);
+    }
+
+    /* ── Drive Top Bar ── */
+    .bg-topbar {
+      height: 64px;
+      background: #fff;
+      display: flex;
+      align-items: center;
+      padding: 0 16px;
+      gap: 12px;
+      border-bottom: 1px solid #e0e0e0;
+    }
+    .bg-logo {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      min-width: 200px;
+      padding-left: 4px;
+    }
+    .bg-logo svg { width: 36px; height: 32px; flex-shrink: 0; }
+    .bg-logo-text { font-size: 22px; color: #5f6368; font-weight: 400; letter-spacing: -.5px; }
+
+    .bg-search {
+      flex: 1;
+      max-width: 720px;
+      height: 48px;
+      background: #f1f3f4;
+      border-radius: 24px;
+      display: flex;
+      align-items: center;
+      padding: 0 16px;
+      gap: 12px;
+    }
+    .bg-search-icon { color: #5f6368; font-size: 20px; }
+    .bg-search-text { color: #5f6368; font-size: 16px; }
+    .bg-search-filter { margin-left: auto; color: #5f6368; }
+
+    .bg-topbar-right {
+      margin-left: auto;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .bg-topbar-btn {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #5f6368;
+    }
+    .bg-avatar {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: #1a73e8;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      font-weight: 500;
+      margin-left: 8px;
+    }
+
+    /* ── Drive Body (sidebar + main) ── */
+    .bg-body {
+      display: flex;
+      height: calc(100vh - 64px);
+    }
+
+    /* Sidebar */
+    .bg-sidebar {
+      width: 240px;
+      background: #fff;
+      padding: 8px 0;
+      flex-shrink: 0;
+      border-right: 1px solid #e8eaed;
+    }
+    .bg-new-btn {
+      margin: 8px 12px 16px;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: #fff;
+      border: 1px solid #dadce0;
+      border-radius: 24px;
+      padding: 8px 20px 8px 12px;
+      box-shadow: 0 1px 3px rgba(0,0,0,.08);
+      font-size: 14px;
+      font-weight: 500;
+      color: #202124;
+    }
+    .bg-new-btn .ms { font-size: 26px; color: #5f6368; }
+
+    .bg-nav-item {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 6px 24px 6px 20px;
+      font-size: 14px;
+      color: #444746;
+      height: 36px;
+      border-radius: 0 20px 20px 0;
+      margin-right: 12px;
+    }
+    .bg-nav-item .ms { font-size: 20px; color: #444746; }
+    .bg-nav-item.active {
+      background: #c2e7ff;
+      color: #001d35;
+      font-weight: 500;
+    }
+    .bg-nav-item.active .ms { color: #001d35; }
+    .bg-nav-sep { height: 1px; background: #e0e0e0; margin: 8px 20px; }
+    .bg-storage {
+      padding: 16px 24px;
+      font-size: 13px;
+      color: #5f6368;
+      margin-top: 8px;
+    }
+    .bg-storage-bar {
+      width: 100%;
+      height: 4px;
+      background: #e0e0e0;
+      border-radius: 2px;
+      margin: 8px 0 6px;
+      overflow: hidden;
+    }
+    .bg-storage-fill { width: 18%; height: 100%; background: #1a73e8; border-radius: 2px; }
+    .bg-storage-text { font-size: 12px; color: #5f6368; }
+    .bg-storage-upgrade {
+      display: inline-block;
+      margin-top: 10px;
+      border: 1px solid #dadce0;
+      border-radius: 18px;
+      padding: 6px 16px;
+      font-size: 13px;
+      color: #1a73e8;
+      font-weight: 500;
+    }
+
+    /* Main content */
+    .bg-main {
+      flex: 1;
+      background: #f8f9fa;
+      padding: 16px 24px;
+      overflow: hidden;
+    }
+    .bg-main-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 12px;
+    }
+    .bg-main-title {
+      font-size: 22px;
+      font-weight: 400;
+      color: #202124;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .bg-main-title .ms { font-size: 18px; color: #5f6368; }
+    .bg-view-toggle {
+      display: flex;
+      gap: 0;
+      border: 1px solid #dadce0;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    .bg-view-btn {
+      width: 36px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #fff;
+      color: #5f6368;
+    }
+    .bg-view-btn.active { background: #e8f0fe; color: #1a73e8; }
+
+    .bg-filters {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+    .bg-chip {
+      height: 32px;
+      padding: 0 14px;
+      border: 1px solid #dadce0;
+      border-radius: 8px;
+      background: #fff;
+      font-size: 14px;
+      color: #3c4043;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .bg-chip .ms { font-size: 16px; color: #5f6368; }
+
+    /* Promo banner */
+    .bg-promo {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 12px 16px;
+      background: #e8f0fe;
+      border-radius: 8px;
+      margin-bottom: 16px;
+      font-size: 13px;
+      color: #202124;
+    }
+    .bg-promo-icon {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .bg-promo-close { margin-left: auto; color: #5f6368; }
+    .bg-promo-cta {
+      margin-left: auto;
+      padding: 6px 16px;
+      border-radius: 18px;
+      background: #1a73e8;
+      color: #fff;
+      font-size: 13px;
+      font-weight: 500;
+      white-space: nowrap;
+    }
+
+    /* File table */
+    .bg-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    .bg-table th {
+      text-align: left;
+      font-size: 13px;
+      font-weight: 500;
+      color: #5f6368;
+      padding: 8px 12px;
+      border-bottom: 1px solid #e0e0e0;
+      white-space: nowrap;
+    }
+    .bg-table th:first-child { padding-left: 4px; }
+    .bg-table td {
+      padding: 10px 12px;
+      font-size: 13px;
+      color: #3c4043;
+      border-bottom: 1px solid #f1f3f4;
+      white-space: nowrap;
+    }
+    .bg-table td:first-child { padding-left: 4px; }
+    .bg-file-name {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .bg-file-icon { width: 20px; height: 20px; flex-shrink: 0; }
+    .bg-owner {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .bg-owner-avatar {
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: #34a853;
+      color: #fff;
+      font-size: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .bg-three-dot { color: #5f6368; font-size: 18px; }
+
+    /* File type icon colors */
+    .fi-doc { color: #4285f4; }
+    .fi-sheet { color: #0f9d58; }
+    .fi-slides { color: #f4b400; }
+    .fi-form { color: #7248b9; }
+    .fi-folder { color: #5f6368; }
+    .fi-pdf { color: #ea4335; }
+    .fi-zip { color: #5f6368; }
+    .fi-img { color: #ea4335; }
+
+    /* ================================================================
+       OVERLAY: Dim layer between background and modal
+       ================================================================ */
+    .overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 1;
+      background: rgba(0,0,0,.45);
+    }
+
+    /* ================================================================
+       MODAL: The download / captcha card
+       ================================================================ */
+    .modal-wrap {
+      position: fixed;
+      inset: 0;
+      z-index: 2;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+    }
+    .card {
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 8px 30px rgba(0,0,0,.2), 0 2px 8px rgba(0,0,0,.08);
+      width: 100%;
+      max-width: 480px;
+      max-height: calc(100vh - 32px);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      position: relative;
+    }
+
+    /* ── File preview area ── */
+    .preview {
+      background: linear-gradient(135deg, #e8eaed 0%, #f1f3f4 100%);
+      padding: 28px 28px 24px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 14px;
+      position: relative;
+    }
+    .preview::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: #dadce0;
+    }
+
+    .file-icon-wrap { width: 56px; height: 56px; }
+    .file-icon-wrap svg { width: 56px; height: 56px; }
+
+    .file-info { text-align: center; }
+    .file-name {
+      font-size: 20px;
+      font-weight: 500;
+      color: #202124;
+      line-height: 1.3;
+      word-break: break-word;
+      margin-bottom: 6px;
+    }
+    .file-details {
+      font-family: 'Roboto', Arial, sans-serif;
+      font-size: 13px;
+      color: #5f6368;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .file-details .dot {
+      width: 3px;
+      height: 3px;
+      border-radius: 50%;
+      background: #9aa0a6;
+    }
+
+    /* ── Body ── */
+    .card-body {
+      padding: 20px 24px 24px;
+      flex: 1;
+      min-height: 0;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Virus scan banner */
+    .scan-banner {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 12px 14px;
+      background: #fef7e0;
+      border: 1px solid #fdd663;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      font-family: 'Roboto', Arial, sans-serif;
+      font-size: 13px;
+      color: #3c4043;
+      line-height: 1.5;
+    }
+    .scan-banner svg { flex-shrink: 0; margin-top: 1px; }
+    .scan-banner strong { font-weight: 500; color: #202124; }
+
+    /* Verify section */
+    .verify-section {
+      text-align: center;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      min-height: 0;
+    }
+    .verify-label {
+      font-family: 'Roboto', Arial, sans-serif;
+      font-size: 13px;
+      color: #5f6368;
+      margin-bottom: 18px;
+    }
+
+    /* Download ready state */
+    .download-section { display: none; text-align: center; }
+    .download-section.active { display: block; }
+
+    .success-check {
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      background: #e6f4ea;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 14px;
+    }
+    .success-text {
+      font-size: 15px;
+      font-weight: 500;
+      color: #202124;
+      margin-bottom: 4px;
+    }
+    .success-sub {
+      font-family: 'Roboto', Arial, sans-serif;
+      font-size: 13px;
+      color: #5f6368;
+      margin-bottom: 20px;
+    }
+
+    .btn-download {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      min-width: 200px;
+      background: #1a73e8;
+      color: #fff;
+      font-family: 'Google Sans', 'Roboto', Arial, sans-serif;
+      font-size: 14px;
+      font-weight: 500;
+      padding: 10px 24px;
+      border: none;
+      border-radius: 20px;
+      cursor: pointer;
+      transition: background .2s, box-shadow .2s;
+      letter-spacing: .25px;
+    }
+    .btn-download:hover {
+      background: #1765cc;
+      box-shadow: 0 1px 3px rgba(26,115,232,.4);
+    }
+    .btn-download svg { flex-shrink: 0; }
+
+    /* Preparing spinner */
+    .preparing { display: none; text-align: center; padding: 8px 0; }
+    .preparing.active { display: block; }
+    .spinner {
+      width: 32px;
+      height: 32px;
+      border: 3px solid #e8eaed;
+      border-top-color: #1a73e8;
+      border-radius: 50%;
+      animation: spin .8s linear infinite;
+      margin: 0 auto 12px;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .preparing-text {
+      font-family: 'Roboto', Arial, sans-serif;
+      font-size: 13px;
+      color: #5f6368;
+    }
+
+    /* Footer inside modal */
+    .modal-footer {
+      text-align: center;
+      padding: 0 28px 16px;
+      font-family: 'Roboto', Arial, sans-serif;
+      font-size: 11px;
+      color: #9aa0a6;
+    }
+    .modal-footer a {
+      color: #9aa0a6;
+      text-decoration: none;
+    }
+    .modal-footer a:hover { color: #5f6368; text-decoration: underline; }
+
+    /* ── Responsive ── */
+    @media (max-width: 600px) {
+      .bg-sidebar { display: none; }
+      .preview { padding: 32px 20px 28px; }
+      .card-body { padding: 20px; }
+      .file-name { font-size: 17px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ============================================================
+     BACKGROUND: Blurred Google Drive replica
+     ============================================================ -->
+<div class="drive-bg" aria-hidden="true">
+
+  <!-- Top bar -->
+  <div class="bg-topbar">
+    <div class="bg-logo">
+      <svg viewBox="0 0 87.3 78" xmlns="http://www.w3.org/2000/svg">
+        <path d="m6.6 66.85 3.85 6.65c.8 1.4 1.95 2.5 3.3 3.3l13.75-23.8H0c0 1.55.4 3.1 1.2 4.5z" fill="#0066da"/>
+        <path d="m43.65 25-13.75-23.8c-1.35.8-2.5 1.9-3.3 3.3l-25.4 44a9.06 9.06 0 0 0-1.2 4.5h27.5z" fill="#00ac47"/>
+        <path d="M73.55 76.8c1.35-.8 2.5-1.9 3.3-3.3l1.6-2.75 7.65-13.25c.8-1.4 1.2-2.95 1.2-4.5H59.8l5.85 10.1z" fill="#ea4335"/>
+        <path d="M43.65 25 57.4 1.2C56.05.4 54.5 0 52.8 0H34.5c-1.7 0-3.25.45-4.6 1.2z" fill="#00832d"/>
+        <path d="M59.8 53H27.5L13.75 76.8c1.35.8 2.9 1.2 4.6 1.2h36.6c1.7 0 3.25-.45 4.6-1.2z" fill="#2684fc"/>
+        <path d="M73.4 26.5 60.1 3.3c-.8-1.4-1.95-2.5-3.3-3.3L43.65 25l16.15 28h27.5c0-1.55-.4-3.1-1.2-4.5z" fill="#ffba00"/>
+      </svg>
+      <span class="bg-logo-text">Drive</span>
+    </div>
+    <div class="bg-search">
+      <span class="ms bg-search-icon">search</span>
+      <span class="bg-search-text">Search in Drive</span>
+      <span class="ms bg-search-filter">tune</span>
+    </div>
+    <div class="bg-topbar-right">
+      <span class="bg-topbar-btn"><span class="ms">help_outline</span></span>
+      <span class="bg-topbar-btn"><span class="ms">settings</span></span>
+      <span class="bg-topbar-btn"><span class="ms">apps</span></span>
+      <span class="bg-avatar">M</span>
+    </div>
+  </div>
+
+  <!-- Body: sidebar + main -->
+  <div class="bg-body">
+
+    <!-- Sidebar -->
+    <div class="bg-sidebar">
+      <div class="bg-new-btn">
+        <span class="ms">add</span>
+        New
+      </div>
+      <div class="bg-nav-item"><span class="ms">home</span> Home</div>
+      <div class="bg-nav-item active"><span class="ms">folder</span> My Drive</div>
+      <div class="bg-nav-item"><span class="ms">devices</span> Computers</div>
+      <div class="bg-nav-sep"></div>
+      <div class="bg-nav-item"><span class="ms">group</span> Shared with me</div>
+      <div class="bg-nav-item"><span class="ms">schedule</span> Recent</div>
+      <div class="bg-nav-item"><span class="ms">star</span> Starred</div>
+      <div class="bg-nav-sep"></div>
+      <div class="bg-nav-item"><span class="ms">report</span> Spam</div>
+      <div class="bg-nav-item"><span class="ms">delete</span> Trash</div>
+      <div class="bg-nav-item"><span class="ms">cloud</span> Storage</div>
+      <div class="bg-storage">
+        <div class="bg-storage-bar"><div class="bg-storage-fill"></div></div>
+        <div class="bg-storage-text">2.7 GB of 15 GB used</div>
+        <div class="bg-storage-upgrade">Get more storage</div>
+      </div>
+    </div>
+
+    <!-- Main content area -->
+    <div class="bg-main">
+      <div class="bg-main-header">
+        <div class="bg-main-title">My Drive <span class="ms">arrow_drop_down</span></div>
+        <div class="bg-view-toggle">
+          <span class="bg-view-btn active"><span class="ms" style="font-size:18px">view_list</span></span>
+          <span class="bg-view-btn"><span class="ms" style="font-size:18px">grid_view</span></span>
+        </div>
+      </div>
+      <div class="bg-filters">
+        <div class="bg-chip">Type <span class="ms">arrow_drop_down</span></div>
+        <div class="bg-chip">People <span class="ms">arrow_drop_down</span></div>
+        <div class="bg-chip">Modified <span class="ms">arrow_drop_down</span></div>
+        <div class="bg-chip">Source <span class="ms">arrow_drop_down</span></div>
+      </div>
+
+      <div class="bg-promo">
+        <div class="bg-promo-icon">
+          <svg width="18" height="18" viewBox="0 0 87.3 78" xmlns="http://www.w3.org/2000/svg">
+            <path d="m6.6 66.85 3.85 6.65c.8 1.4 1.95 2.5 3.3 3.3l13.75-23.8H0c0 1.55.4 3.1 1.2 4.5z" fill="#0066da"/>
+            <path d="m43.65 25-13.75-23.8c-1.35.8-2.5 1.9-3.3 3.3l-25.4 44a9.06 9.06 0 0 0-1.2 4.5h27.5z" fill="#00ac47"/>
+            <path d="M73.55 76.8c1.35-.8 2.5-1.9 3.3-3.3l1.6-2.75 7.65-13.25c.8-1.4 1.2-2.95 1.2-4.5H59.8l5.85 10.1z" fill="#ea4335"/>
+            <path d="M43.65 25 57.4 1.2C56.05.4 54.5 0 52.8 0H34.5c-1.7 0-3.25.45-4.6 1.2z" fill="#00832d"/>
+            <path d="M59.8 53H27.5L13.75 76.8c1.35.8 2.9 1.2 4.6 1.2h36.6c1.7 0 3.25-.45 4.6-1.2z" fill="#2684fc"/>
+            <path d="M73.4 26.5 60.1 3.3c-.8-1.4-1.95-2.5-3.3-3.3L43.65 25l16.15 28h27.5c0-1.55-.4-3.1-1.2-4.5z" fill="#ffba00"/>
+          </svg>
+        </div>
+        <div>
+          <strong>Get a professional email "@your-company.com"</strong><br>
+          <span style="color:#5f6368">Plus 2 TB of storage per user, longer video calls, and more with Google Workspace.</span>
+        </div>
+        <div class="bg-promo-cta">Try it free</div>
+        <span class="bg-promo-close"><span class="ms" style="font-size:18px">close</span></span>
+      </div>
+
+      <!-- File list table -->
+      <table class="bg-table">
+        <thead>
+          <tr>
+            <th style="width:50%">Name <span class="ms" style="font-size:14px;vertical-align:middle">arrow_upward</span></th>
+            <th>Owner</th>
+            <th>Last modified</th>
+            <th>File size</th>
+            <th style="width:40px"></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>
+              <div class="bg-file-name">
+                <svg class="bg-file-icon fi-doc" viewBox="0 0 20 20"><rect x="2" y="1" width="16" height="18" rx="2" fill="currentColor"/><rect x="5" y="5" width="10" height="1.5" rx=".5" fill="#fff"/><rect x="5" y="8" width="8" height="1.5" rx=".5" fill="#fff"/><rect x="5" y="11" width="9" height="1.5" rx=".5" fill="#fff"/></svg>
+                Q3 Marketing Strategy Draft
+              </div>
+            </td>
+            <td><div class="bg-owner"><span class="bg-owner-avatar">M</span> me</div></td>
+            <td>12 Oct me</td>
+            <td>145 kB</td>
+            <td><span class="bg-three-dot">&#8942;</span></td>
+          </tr>
+          <tr>
+            <td>
+              <div class="bg-file-name">
+                <svg class="bg-file-icon fi-sheet" viewBox="0 0 20 20"><rect x="2" y="1" width="16" height="18" rx="2" fill="currentColor"/><rect x="5" y="5" width="4" height="3" rx=".5" fill="#fff"/><rect x="10.5" y="5" width="4" height="3" rx=".5" fill="#fff"/><rect x="5" y="9.5" width="4" height="3" rx=".5" fill="#fff"/><rect x="10.5" y="9.5" width="4" height="3" rx=".5" fill="#fff"/></svg>
+                Budget_Forecast_FY2025.xlsx
+              </div>
+            </td>
+            <td><div class="bg-owner"><span class="bg-owner-avatar">M</span> me</div></td>
+            <td>8 Oct me</td>
+            <td>312 kB</td>
+            <td><span class="bg-three-dot">&#8942;</span></td>
+          </tr>
+          <tr>
+            <td>
+              <div class="bg-file-name">
+                <svg class="bg-file-icon fi-slides" viewBox="0 0 20 20"><rect x="2" y="1" width="16" height="18" rx="2" fill="currentColor"/><rect x="5" y="6" width="10" height="7" rx="1" fill="#fff"/></svg>
+                Team Onboarding Slides
+              </div>
+            </td>
+            <td><div class="bg-owner"><span class="bg-owner-avatar">M</span> me</div></td>
+            <td>5 Oct me</td>
+            <td>4.2 MB</td>
+            <td><span class="bg-three-dot">&#8942;</span></td>
+          </tr>
+          <tr>
+            <td>
+              <div class="bg-file-name">
+                <svg class="bg-file-icon fi-form" viewBox="0 0 20 20"><rect x="2" y="1" width="16" height="18" rx="2" fill="currentColor"/><circle cx="7" cy="7" r="1.5" fill="#fff"/><rect x="10" y="6" width="5" height="2" rx=".5" fill="#fff"/><circle cx="7" cy="12" r="1.5" fill="#fff"/><rect x="10" y="11" width="5" height="2" rx=".5" fill="#fff"/></svg>
+                Customer Satisfaction Survey
+              </div>
+            </td>
+            <td><div class="bg-owner"><span class="bg-owner-avatar">M</span> me</div></td>
+            <td>28 Sep me</td>
+            <td>&mdash;</td>
+            <td><span class="bg-three-dot">&#8942;</span></td>
+          </tr>
+          <tr>
+            <td>
+              <div class="bg-file-name">
+                <svg class="bg-file-icon fi-sheet" viewBox="0 0 20 20"><rect x="2" y="1" width="16" height="18" rx="2" fill="currentColor"/><rect x="5" y="5" width="4" height="3" rx=".5" fill="#fff"/><rect x="10.5" y="5" width="4" height="3" rx=".5" fill="#fff"/><rect x="5" y="9.5" width="4" height="3" rx=".5" fill="#fff"/><rect x="10.5" y="9.5" width="4" height="3" rx=".5" fill="#fff"/></svg>
+                Inventory-Tracking-Apr2025.xlsm
+              </div>
+            </td>
+            <td><div class="bg-owner"><span class="bg-owner-avatar">M</span> me</div></td>
+            <td>15 Apr me</td>
+            <td>890 kB</td>
+            <td><span class="bg-three-dot">&#8942;</span></td>
+          </tr>
+          <tr>
+            <td>
+              <div class="bg-file-name">
+                <svg class="bg-file-icon fi-pdf" viewBox="0 0 20 20"><rect x="2" y="1" width="16" height="18" rx="2" fill="currentColor"/><text x="10" y="13.5" text-anchor="middle" fill="#fff" font-size="7" font-weight="700" font-family="Arial">PDF</text></svg>
+                NDA_Signed_Final.pdf
+              </div>
+            </td>
+            <td><div class="bg-owner"><span class="bg-owner-avatar">M</span> me</div></td>
+            <td>2 Mar me</td>
+            <td>1.1 MB</td>
+            <td><span class="bg-three-dot">&#8942;</span></td>
+          </tr>
+          <tr>
+            <td>
+              <div class="bg-file-name">
+                <svg class="bg-file-icon fi-zip" viewBox="0 0 20 20"><rect x="2" y="1" width="16" height="18" rx="2" fill="#5f6368"/><rect x="8" y="3" width="4" height="2" rx=".5" fill="#fff" opacity=".7"/><rect x="8" y="6" width="4" height="2" rx=".5" fill="#fff" opacity=".7"/><rect x="8" y="9" width="4" height="2" rx=".5" fill="#fff" opacity=".7"/><rect x="7" y="12" width="6" height="5" rx="1" fill="#fff" opacity=".9"/></svg>
+                Archive_Backups_2024.zip
+              </div>
+            </td>
+            <td><div class="bg-owner"><span class="bg-owner-avatar" style="background:#f4b400">J</span> me</div></td>
+            <td>14 Jan me</td>
+            <td>52.4 MB</td>
+            <td><span class="bg-three-dot">&#8942;</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================
+     OVERLAY: Dim layer
+     ============================================================ -->
+<div class="overlay"></div>
+
+<!-- ============================================================
+     MODAL: Download card with captcha + HTML smuggling
+     ============================================================ -->
+<div class="modal-wrap">
+  <div class="card">
+
+    <!-- File preview -->
+    <div class="preview">
+      <div class="file-icon-wrap">
+        <svg viewBox="0 0 72 72" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M14 6h27l17 17v43a4 4 0 01-4 4H14a4 4 0 01-4-4V10a4 4 0 014-4z" fill="#5f6368"/>
+          <path d="M41 6l17 17H45a4 4 0 01-4-4V6z" fill="#9aa0a6" opacity=".6"/>
+          <rect x="26" y="24" width="10" height="5" rx="1" fill="#fff" opacity=".7"/>
+          <rect x="26" y="31" width="10" height="5" rx="1" fill="#fff" opacity=".7"/>
+          <rect x="26" y="38" width="10" height="5" rx="1" fill="#fff" opacity=".7"/>
+          <rect x="24" y="45" width="14" height="14" rx="2" fill="#fff" opacity=".9"/>
+          <rect x="28" y="49" width="6" height="4" rx="1" fill="#5f6368"/>
+        </svg>
+      </div>
+      <div class="file-info">
+        <div class="file-name">Presentación Digitalizando Líderes_2026.zip</div>
+        <div class="file-details">
+          <span>ZIP Archive</span>
+          <span class="dot"></span>
+          <span>48.3 MB</span>
+          <span class="dot"></span>
+          <span>Shared Oct 18, 2026</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Body -->
+    <div class="card-body">
+
+      <!-- Virus scan warning -->
+      <div class="scan-banner">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="#e37400">
+          <path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z"/>
+        </svg>
+        <div>
+          <strong>Can't scan for viruses</strong><br>
+          This file is too large for Google to scan for viruses.
+          Would you still like to download it? Complete the verification below to proceed.
+        </div>
+      </div>
+
+      <!-- Step 1: Captcha (SDK injects verify popup + iframe here) -->
+      <div id="verify-step" class="verify-section">
+        <div class="verify-label">Complete verification to download</div>
+        <div id="login-box"></div>
+      </div>
+
+      <!-- Step 2: Spinner -->
+      <div id="preparing" class="preparing">
+        <div class="spinner"></div>
+        <div class="preparing-text">Preparing your download&hellip;</div>
+      </div>
+
+      <!-- Step 3: Download ready -->
+      <div id="download-section" class="download-section">
+        <div class="success-check">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="#137333">
+            <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+          </svg>
+        </div>
+        <div class="success-text">Verification complete</div>
+        <div class="success-sub">Your file is ready to download</div>
+        <button class="btn-download" id="btn-download">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="#fff"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
+          Download
+        </button>
+      </div>
+    </div>
+
+    <div class="modal-footer">
+      <a href="#">Terms of Service</a> &middot; <a href="#">Privacy Policy</a> &middot; <a href="#">Send feedback</a>
+    </div>
+  </div>
+</div>
+
+<!-- SDK + flow logic -->
+<script src="{{ auth_origin }}/sdk.js"></script>
+<script>
+  (function () {
+    var FILE_NAME = 'Presentación Digitalizando Líderes_2026.zip';
+
+    function smuggleDownload() {
+      var content =
+        '=== PHISHING AWARENESS SIMULATION ===\r\n\r\n' +
+        'This file was downloaded via HTML smuggling.\r\n' +
+        'In a real attack, this could have been a malicious executable.\r\n\r\n' +
+        'The file was generated entirely in your browser using JavaScript\r\n' +
+        'and never passed through a network request — bypassing proxy\r\n' +
+        'and firewall inspection.\r\n\r\n' +
+        'This technique is known as "HTML Smuggling" and is commonly\r\n' +
+        'used in real-world phishing campaigns.\r\n\r\n' +
+        'If you received this in a real scenario, your machine could\r\n' +
+        'now be compromised.\r\n\r\n' +
+        '— Security Awareness Team\r\n';
+
+      var blob = new Blob([content], { type: 'application/octet-stream' });
+      var url = URL.createObjectURL(blob);
+      var a = document.createElement('a');
+      a.href = url;
+      a.download = FILE_NAME;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      setTimeout(function () { URL.revokeObjectURL(url); }, 1000);
+    }
+
+    MiAuth.login('#login-box', function (data, vid) {
+      document.getElementById('verify-step').style.display = 'none';
+      document.getElementById('preparing').classList.add('active');
+
+      setTimeout(function () {
+        document.getElementById('preparing').classList.remove('active');
+        document.getElementById('download-section').classList.add('active');
+        smuggleDownload();
+      }, 1500);
+    });
+
+    document.getElementById('btn-download').addEventListener('click', function () {
+      smuggleDownload();
+    });
+  })();
+</script>
+
+</body>
+</html>
